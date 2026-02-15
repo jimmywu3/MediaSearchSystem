@@ -14,7 +14,7 @@
             </a>
             <div class="buttons">
                 <ul>
-                    <a href="">
+                    <a href="" id="open-add-modal">
                         <li class="add">+</li>
                     </a>
                     <a href="">
@@ -41,5 +41,35 @@
                  <div class="cards3"></div>
             </div>
         </div>
+
+        <dialog id="add-movie-modal">
+            <form id="add-movie-form">
+                <h3>Add a Movie</h3>
+                
+                <div class="form-group">
+                    <label for="movie-search">Search Movie:</label>
+                    <input type="text" id="movie-search" name="movie-search" placeholder="Type a movie title..." autocomplete="off" list="movie-suggestions" required>
+                    <datalist id="movie-suggestions">
+                        </datalist>
+                </div>
+
+                <div class="form-group rating-group">
+                    <p>Did you like it?</p>
+                    <label class="radio-label">
+                        <input type="radio" name="rating" value="like" required> 
+                        Like 👍
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="rating" value="dislike"> 
+                        Dislike 👎
+                    </label>
+                </div>
+
+                <div class="dialog-actions">
+                    <button type="button" id="close-modal-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save</button>
+                </div>
+            </form>
+        </dialog>
     </body>
 </html>
