@@ -192,3 +192,58 @@ button {
 .btn-primary:hover {
     background-color: #6a6a6a;
 }
+
+/* SKeleton Cards*/
+/* Skeleton Card Container */
+.skeleton-card {
+    width: 200px; /* Fixed width for standard movie posters */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0; /* Prevents flexbox from squishing the cards when they overflow */
+}
+
+/* Base styling for all skeleton elements */
+.skeleton {
+    background-color: #2a2a2a;
+    border-radius: 4px;
+    /* The gradient creates the 'shine' effect */
+    background-image: linear-gradient(
+        90deg, 
+        rgba(255, 255, 255, 0) 0, 
+        rgba(255, 255, 255, 0.05) 40px, 
+        rgba(255, 255, 255, 0) 80px
+    );
+    background-size: 200px 100%;
+    background-repeat: no-repeat;
+    animation: shimmer 1.5s infinite linear;
+}
+
+/* Specific Element Dimensions */
+.skeleton-poster {
+    width: 100%;
+    height: 300px; /* Standard poster aspect ratio */
+    border-radius: 8px;
+}
+
+.skeleton-text {
+    height: 16px;
+}
+
+.skeleton-text.title {
+    width: 80%;
+}
+
+.skeleton-text.subtitle {
+    width: 50%;
+}
+
+/* Shimmer Animation Keyframes */
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
