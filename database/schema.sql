@@ -47,4 +47,26 @@ CREATE TABLE IF NOT EXISTS Title_Actors (
     FOREIGN KEY (actor_id) REFERENCES Actors(actor_id) ON DELETE CASCADE
 );
 
--- 7. User table (not yet implemented)
+
+-- 7. Users table
+CREATE TABLE IF NOT EXISTS Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(255) UNIQUE NOT NULL,
+    FULLTEXT(user_name)
+);
+
+-- 5. Directors table
+CREATE TABLE IF NOT EXISTS Directors (
+    director_id INT AUTO_INCREMENT PRIMARY KEY,
+    director_name VARCHAR(255) UNIQUE NOT NULL,
+    FULLTEXT(director_name)
+);
+
+-- 5. Junction User preference table
+CREATE TABLE IF NOT EXISTS Actors (
+    actor_id INT AUTO_INCREMENT PRIMARY KEY,
+    actor_name VARCHAR(255) UNIQUE NOT NULL,
+    FULLTEXT(actor_name)
+);
+
+
