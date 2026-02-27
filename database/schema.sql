@@ -48,3 +48,8 @@ CREATE TABLE IF NOT EXISTS Title_Actors (
 );
 
 -- 7. User table (not yet implemented)
+CREATE TABLE IF NOT EXISTS User (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(255) UNIQUE NOT NULL,
+    FULLTEXT(user_name)
+);
