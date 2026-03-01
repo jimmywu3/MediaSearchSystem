@@ -47,4 +47,34 @@ CREATE TABLE IF NOT EXISTS Title_Actors (
     FOREIGN KEY (actor_id) REFERENCES Actors(actor_id) ON DELETE CASCADE
 );
 
--- 7. User table (not yet implemented)
+-- 7. User table 
+CREATE TABLE IF NOT EXISTS Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 8. Follower Table (users following other users)
+CREATE TABLE IF NOT EXISTS User_Connections (
+    follower_id INT, -- user who clicked follow
+    followed_id INT, -- user being followed
+    PRIMARY KEY (follower_id, followed_id),
+    FOREIGN KEY (follower_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (followed_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    -- don't allow users to follow themselves
+    CONSTRAINT check_not_self CHECK (follower_id <> followed_id)
+);
+
+-- 9. Movie Ratings for movies watched by users
+CREATE TABLE IF NOT EXISTS User_Ratings (
+    user_id INT,
+    title_id INT,
+    rating TINYINT UNSIGNED CHECK (rating BETWEEN 1 AND 10), -- score of 1-10
+    review_text TEXT,
+    rated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, title_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (title_id) REFERENCES Titles(title_id) ON DELETE CASCADE
+);
