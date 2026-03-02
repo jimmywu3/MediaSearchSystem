@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS User_Connections (
 CREATE TABLE IF NOT EXISTS User_Ratings (
     user_id INT,
     title_id INT,
-    rating TINYINT UNSIGNED CHECK (rating BETWEEN 1 AND 10), -- score of 1-10
+    rating DECIMAL(3,1) NOT NULL CHECK (rating BETWEEN 1.0 AND 10.0), -- score of 1-10
     review_text TEXT,
     rated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, title_id),
