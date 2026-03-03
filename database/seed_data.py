@@ -37,8 +37,8 @@ def seed_database():
         print(f"Populating genre: {genre['name']}...")
         discover_url = f"https://api.themoviedb.org/3/discover/movie"
         params = {"api_key": API_KEY, "with_genres": genre['id'], "sort_by": "popularity.desc"}
-        # 15 movies
-        movies = requests.get(discover_url, params=params).json().get('results', [])[:15]
+        # 20 movies
+        movies = requests.get(discover_url, params=params).json().get('results', [])[:20]
 
         for m in movies:
             # insert Title

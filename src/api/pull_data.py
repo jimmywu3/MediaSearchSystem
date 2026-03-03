@@ -24,8 +24,8 @@ def get_movie_data():
             "with_genres": genre['id'],
             "sort_by": "popularity.desc"
         }
-        # limit to top 15 movies
-        movie_results = requests.get(discover_url, params=params).json().get('results', [])[:15]
+        # limit to top 20 movies
+        movie_results = requests.get(discover_url, params=params).json().get('results', [])[:20]
         
         for m in movie_results:
             movie_id = m['id']
