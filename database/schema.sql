@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS Titles (
     type ENUM('Movie', 'Series') DEFAULT 'Movie',
     overview TEXT,
     avg_rating DECIMAL(3, 1) DEFAULT 0.0,
+    poster_path VARCHAR(255),
     -- full-text index to allow searching on title and description using words
     FULLTEXT(title, overview)
 );
