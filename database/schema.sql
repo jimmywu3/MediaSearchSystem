@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS Titles (
     type ENUM('Movie', 'Series') DEFAULT 'Movie',
     overview TEXT,
     avg_rating DECIMAL(3, 1) DEFAULT 0.0,
+    poster_path VARCHAR(255),
     -- full-text index to allow searching on title and description using words
     FULLTEXT(title, overview)
 );
@@ -48,18 +49,10 @@ CREATE TABLE IF NOT EXISTS Title_Actors (
 );
 
 
--- 7. Users table
-CREATE TABLE IF NOT EXISTS Users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_name VARCHAR(255) UNIQUE NOT NULL,
-    FULLTEXT(user_name)
-);
-
--- 5. Directors table
 -- 7. User table 
 CREATE TABLE IF NOT EXISTS Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
+    user_name VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

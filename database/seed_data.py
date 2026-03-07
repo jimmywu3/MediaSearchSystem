@@ -37,8 +37,8 @@ def seed_database():
         print(f"Populating genre: {genre['name']}...")
         discover_url = f"https://api.themoviedb.org/3/discover/movie"
         params = {"api_key": API_KEY, "with_genres": genre['id'], "sort_by": "popularity.desc"}
-        # 15 movies
-        movies = requests.get(discover_url, params=params).json().get('results', [])[:15]
+        # 20 movies
+        movies = requests.get(discover_url, params=params).json().get('results', [])[:20]
 
         for m in movies:
             # insert Title
@@ -47,24 +47,26 @@ def seed_database():
 
             detail_url = f"https://api.themoviedb.org/3/movie/{m_id}?api_key={API_KEY}&append_to_response=credits"
             detail_data = requests.get(detail_url).json()
-
+            # poster path
+            poster_path = detail_data.get('poster_path')
             # runtime 
             runtime = detail_data.get('runtime', 0)
             # credits to use for Director and Actors
-            credits = requests.get(f"https://api.themoviedb.org/3/movie/{m_id}/credits?api_key={API_KEY}").json()
+            credits = detail_data.get('credits', {})
             
             director = next((mem['name'] for mem in credits.get('crew', []) if mem['job'] == 'Director'), "Unknown")
             
             sql_title = """INSERT IGNORE INTO Titles 
-                           (title_id, title, release_year, runtime, director, overview, type, avg_rating) 
-                           VALUES (%s, %s, %s, %s, %s, %s, 'Movie', %s)"""
+                           (title_id, title, release_year, runtime, director, overview, type, avg_rating, poster_path) 
+                           VALUES (%s, %s, %s, %s, %s, %s, 'Movie', %s, %s)"""
             year = m.get('release_date', '0000')[:4]
             cursor.execute(sql_title, (
                 m_id, m['title'], 
                 year, runtime, 
                 director, 
                 m.get('overview', ''), 
-                avg_rating
+                avg_rating,
+                poster_path
             ))
 
             # link Title to Genre
