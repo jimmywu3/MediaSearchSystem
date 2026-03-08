@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS Users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     user_name VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -66,11 +66,13 @@ CREATE TABLE IF NOT EXISTS Directors (
     FULLTEXT(director_name)
 );
 
--- 5. Junction User preference table
-CREATE TABLE IF NOT EXISTS Actors (
-    actor_id INT AUTO_INCREMENT PRIMARY KEY,
-    actor_name VARCHAR(255) UNIQUE NOT NULL,
-    FULLTEXT(actor_name)
+-- 5. Junction Table: Titles and Directors
+CREATE TABLE IF NOT EXISTS Title_Directors (
+    title_id INT,
+    director_id INT,
+    PRIMARY KEY (title_id, director_id),
+    FOREIGN KEY (title_id) REFERENCES Titles(title_id) ON DELETE CASCADE,
+    FOREIGN KEY (director_id) REFERENCES Directors(director_id) ON DELETE CASCADE
 );
 
 
@@ -81,6 +83,7 @@ CREATE TABLE IF NOT EXISTS User_Ratings (
     title_id INT,
     rating DECIMAL(3,1) NOT NULL CHECK (rating BETWEEN 1.0 AND 10.0), -- score of 1-10
     review_text TEXT,
+    time_watched TIMESTAMP DEFAULT NULL, 
     rated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id, title_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
