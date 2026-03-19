@@ -15,10 +15,10 @@ body {
 
 nav {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
-    background-color: #1e1e1e; 
-    height: 70px; 
+    background-color: #1e1e1e;
+    height: 70px;
     padding: 0 2rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
@@ -30,15 +30,14 @@ nav .logo {
 }
 
 nav a {
-    color: inherit; 
+    color: inherit;
     text-decoration: none;
 }
 
-
 nav .buttons ul {
     display: flex;
-    list-style: none; 
-    gap: 1.5rem; 
+    list-style: none;
+    gap: 1.5rem;
     align-items: center;
 }
 
@@ -53,6 +52,23 @@ nav .buttons a:hover li {
     background-color: #4a4a4a;
 }
 
+.profile,
+.debug {
+    padding: 0.5rem 1rem;
+    background-color: #333333;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+    border: none;
+    color: #e5e5e5;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.profile:hover,
+.debug:hover {
+    background-color: #4a4a4a;
+}
+
 .content {
     padding: 2rem;
     max-width: 1400px;
@@ -62,7 +78,7 @@ nav .buttons a:hover li {
 .row1,
 .row2,
 .row3 {
-    min-height: 350px; 
+    min-height: 350px;
     margin-bottom: 3rem;
     display: flex;
     flex-direction: column;
@@ -126,15 +142,15 @@ nav .buttons a:hover li {
 .cards1,
 .cards2,
 .cards3 {
-    flex-grow: 1; 
+    flex-grow: 1;
     display: flex;
     gap: 1rem;
-    overflow-x: auto; 
+    overflow-x: auto;
     padding-bottom: 1rem;
 }
 
 dialog {
-    margin: auto; 
+    margin: auto;
     padding: 2rem;
     background-color: #1e1e1e;
     color: #ffffff;
@@ -145,9 +161,35 @@ dialog {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
+.profile-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #333;
+    margin-bottom: 1rem;
+}
+
+#close-profile-modal {
+    position: absolute;
+    right: 0.25rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+#close-profile-modal:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(3px); 
+    backdrop-filter: blur(3px);
 }
 
 #add-movie-form h3 {
@@ -191,7 +233,7 @@ dialog::backdrop {
 }
 
 .rating-group p {
-    width: 100%; 
+    width: 100%;
 }
 
 .radio-label {
@@ -237,11 +279,11 @@ button {
 }
 
 .skeleton-card {
-    width: 200px; 
+    width: 200px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 .skeleton {
@@ -283,4 +325,18 @@ button {
     100% {
         background-position: calc(200px + 100%) 0;
     }
+}
+
+.poster-placeholder {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #222, #333);
+}
+
+.poster-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
 }
