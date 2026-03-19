@@ -17,9 +17,12 @@
                     <a href="" id="open-add-modal">
                         <li class="add">+</li>
                     </a>
-                    <a href="">
-                        <li class="profile">Profile</li>
-                    </a>
+                    <button id="open-profile" class="profile" type="button">
+                        Profile
+                    </button>
+                    <button id="open-debug" class="debug" type="button">
+                        🐛 Debug
+                    </button>
                 </ul>
             </div>
         </nav>
@@ -53,7 +56,9 @@
             </div>
             <div class="row2">
                 <div class="row-header">
-                    <h2>Because you like "Insert Genre or Movie Name"</h2>
+                    <h2 id="row2-title">
+                        Because you like "Insert Genre or Movie Name"
+                    </h2>
                     <button
                         class="refresh-btn"
                         data-target="cards2"
@@ -67,7 +72,7 @@
             </div>
             <div class="row3">
                 <div class="row-header">
-                    <h2>What is popular with other users</h2>
+                    <h2 id="row3-title">Popular at this time for you</h2>
                     <button
                         class="refresh-btn"
                         data-target="cards3"
@@ -80,6 +85,59 @@
                 <div class="cards3"></div>
             </div>
         </div>
+
+        <dialog id="profile-modal">
+            <div class="profile-header">
+                <h3>Watch History</h3>
+                <button id="close-profile-modal" type="button"><p>×</p></button>
+            </div>
+            <div class="profile-body">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Movie</th>
+                            <th>Rating</th>
+                            <th>Watched (hour)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                        <tr>
+                            <td colspan="3">Loading…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </dialog>
+
+        <dialog id="debug-modal">
+            <div class="profile-header">
+                <h3>Debug Controls</h3>
+                <button id="close-debug-modal" type="button"><p>×</p></button>
+            </div>
+            <div class="form-group">
+                <label for="debug-hour">Override Current Hour (0-23):</label>
+                <input
+                    type="number"
+                    id="debug-hour"
+                    min="0"
+                    max="23"
+                    step="1"
+                    value="12"
+                />
+            </div>
+            <div class="dialog-actions">
+                <button
+                    type="button"
+                    id="debug-clear-btn"
+                    class="btn-secondary"
+                >
+                    Clear Override
+                </button>
+                <button type="button" id="debug-set-btn" class="btn-primary">
+                    Set & Refresh
+                </button>
+            </div>
+        </dialog>
 
         <dialog id="add-movie-modal">
             <form id="add-movie-form">
@@ -109,6 +167,19 @@
                         max="10"
                         step="0.1"
                         value="7.5"
+                        required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="watched-hour">Watched hour (0–23):</label>
+                    <input
+                        type="number"
+                        id="watched-hour"
+                        name="watched-hour"
+                        min="0"
+                        max="23"
+                        step="1"
                         required
                     />
                 </div>
