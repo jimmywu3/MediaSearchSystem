@@ -25,6 +25,9 @@ def generate_random_time(hour_choices):
 def seed_primary_user(cursor):
     print("Creating Primary Test User ...")
     
+    # TRACKER: keep track of every ID the Main user rated
+    main_rated_titles = set()
+
     # Create the user
     cursor.execute("INSERT INTO Users (user_name, email, password) VALUES (%s, %s, %s)", 
                    ("Main", "main@test.com", "cs125"))
@@ -44,13 +47,17 @@ def seed_primary_user(cursor):
         cursor.execute("""
             INSERT INTO User_Ratings (user_id, title_id, rating, time_watched) 
             VALUES (%s, %s, %s, CAST(%s AS TIME))""", (primary_id, m_id, random.uniform(8.0, 10.0), watch_time))
+        main_rated_titles.add(m_id)
 
     # Variety of movies (15 movies, various genres, random times)
-    cursor.execute("""
-        SELECT t.title_id FROM Titles t 
+    exclude_ids = ", ".join(map(str, main_rated_titles))
+    cursor.execute(f"""
+        SELECT DISTINCT t.title_id FROM Titles t 
         JOIN Title_Genres tg ON t.title_id = tg.title_id 
         JOIN Genres g ON tg.genre_id = g.genre_id 
-        WHERE g.genre_name != 'Horror' LIMIT 15""")
+        WHERE g.genre_name != 'Horror' 
+        AND t.title_id NOT IN ({exclude_ids}) 
+        LIMIT 15""")
     various_ids = [row[0] for row in cursor.fetchall()]
 
     day_hours = list(range(8, 20)) # 8 AM to 8 PM
@@ -59,6 +66,7 @@ def seed_primary_user(cursor):
         cursor.execute("""
             INSERT INTO User_Ratings (user_id, title_id, rating, time_watched) 
             VALUES (%s, %s, %s, CAST(%s AS TIME))""", (primary_id, m_id, random.uniform(5.0, 8.5), watch_time))
+        main_rated_titles.add(m_id)
 
     return primary_id, horror_ids, various_ids
 
@@ -88,7 +96,7 @@ def seed_persona_users(cursor, shared_horror, shared_various):
             rated_titles = set()
 
             if p_name == "Horror_Fan":
-                # Shares 5 of your horror picks with high ratings
+                # Shares 5 horror picks with high ratings
                 for m_id in random.sample(shared_horror, 5):
                     cursor.execute("INSERT INTO User_Ratings (user_id, title_id, rating) VALUES (%s, %s, %s)",
                                    (u_id, m_id, random.uniform(8.5, 10.0)))
@@ -104,13 +112,13 @@ def seed_persona_users(cursor, shared_horror, shared_various):
                     rated_titles.add(m_id)
             
             elif p_name == "Action_Fan":
-                # Shares 5 of your "various" picks
+                # Shares 5 "various" picks
                 for m_id in random.sample(shared_various, 5):
                     cursor.execute("INSERT INTO User_Ratings (user_id, title_id, rating) VALUES (%s, %s, %s)",
                                    (u_id, m_id, random.uniform(7.0, 9.0)))
                     rated_titles.add(m_id)
                     
-                # 4 individual Action likes
+                # 4 individual Action likes (not in Primary User's list)
                 cursor.execute("""
                     SELECT t.title_id FROM Titles t JOIN Title_Genres tg ON t.title_id = tg.title_id 
                     JOIN Genres g ON tg.genre_id = g.genre_id 
@@ -118,7 +126,7 @@ def seed_persona_users(cursor, shared_horror, shared_various):
                 for m_id in [r[0] for r in cursor.fetchall()]:
                     cursor.execute("INSERT INTO User_Ratings (user_id, title_id, rating) VALUES (%s, %s, %s)", (u_id, m_id, random.uniform(8.5, 10.0)))
                     rated_titles.add(m_id)
-            
+
             elif p_name == "Genre_Neutral":
                 # Shared (2 horror, 2 various)
                 for m_id in (shared_horror[:2] + shared_various[:2]):
@@ -149,6 +157,12 @@ def main():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
+        
+        # Clear existing test data (if any)
+        cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+        cursor.execute("TRUNCATE TABLE User_Ratings;")
+        cursor.execute("TRUNCATE TABLE Users;")
+        cursor.execute("SET FOREIGN_KEY_CHECKS = 1;")
 
         # Create Primary User
         p_id, horror_list, various_list = seed_primary_user(cursor)
